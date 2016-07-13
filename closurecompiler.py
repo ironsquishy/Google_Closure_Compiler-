@@ -5,11 +5,11 @@
 import httplib, urllib, sys
 
 
-def main(urlArg, fileNameArg):
+def main(optimize, urlArg, fileNameArg):
 
     params = urllib.urlencode([
     ('code_url', urlArg),
-    ('compilation_level', 'WHITESPACE_ONLY'),
+    ('compilation_level', optimize),
     ('output_format', 'text'),
     ('output_info', 'compiled_code')
     ])
@@ -26,4 +26,20 @@ def main(urlArg, fileNameArg):
         fileOuput.write(data)
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    if len(sys.argv) > 2:
+        if sys.argv[1] == '-w':
+            optimize = 'WHITESPACE_ONLY'
+        elif sys.argv[1] == '-a':
+            optimize = 'ADVANCED_OPTIMIZATIONS'
+        elif sys.argv[1] == '-s':
+            optimize = 'SIMPLE_OPTIMIZATIONS'
+        else:
+            optimize = 'SIMPLE_OPTIMIZATIONS'
+        urlArg = sys.argv[2];
+        fileName = sys.argv[3];
+        main(optimize, urlArg, fileName)
+    else:
+       optimize = 'SIMPLE_OPTIMIZATIONS'
+       urlArg = sys.argv[1]
+       fileName = sys.argv[2]
+       main(optimize, urlArg, fileName)
